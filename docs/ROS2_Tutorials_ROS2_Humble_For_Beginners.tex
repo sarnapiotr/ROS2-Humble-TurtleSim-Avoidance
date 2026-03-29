@@ -1,0 +1,593 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+
+\definecolor{codeGreen}{rgb}{0,0.6,0}
+\definecolor{codeGray}{rgb}{0.5,0.5,0.5}
+\definecolor{codePurple}{rgb}{0.58,0,0.82}
+\definecolor{codeBg}{rgb}{0.95,0.95,0.92}
+
+\definecolor{terminalBg}{rgb}{0.15,0.15,0.15}
+\definecolor{terminalText}{rgb}{0.95,0.95,0.95}
+
+\lstdefinestyle{pythonStyle}{
+    backgroundcolor=\color{codeBg},   
+    commentstyle=\color{codeGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codeGray},
+    stringstyle=\color{codePurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=4
+}
+
+\lstdefinestyle{bashStyle}{
+    backgroundcolor=\color{terminalBg},   
+    basicstyle=\ttfamily\footnotesize\color{terminalText},
+    keywordstyle=\color{green},
+    stringstyle=\color{cyan},
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=none,
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstdefinestyle{xmlStyle}{
+    backgroundcolor=\color{codeBg},   
+    basicstyle=\ttfamily\footnotesize\color{black},
+    moredelim=[s][\color{blue}]{<}{>},
+    moredelim=[s][\color{codeGreen}]{"}{"},
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=none,                  
+    tabsize=2
+}
+
+\newcommand{\code}[1]{\colorbox{codeBg}{\texttt{#1}}}
+
+\newtcolorbox{notebox}[1][Note]{
+    colback=blue!5!white,
+    colframe=blue!80!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=2mm
+}
+
+\newtcolorbox{warnbox}[1][Warning]{
+    colback=red!5!white,
+    colframe=red!75!black,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=2mm
+}
+
+\title{ROS2 Tutorials - ROS2 Humble For Beginners}
+\author{Piotr Sarna}
+\date{March 2026}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Intro: Install and Setup ROS2 Humble - Tutorial 1}
+
+To install packages in ROS2, use the following command syntax:
+\begin{lstlisting}[style=bashStyle, language=bash]
+sudo apt install ros-humble-package_name
+\end{lstlisting}
+
+\subsection*{Environment Setup}
+
+To configure the environment, you need to edit the terminal configuration file. Open the file using the GNOME text editor (\code{gedit}):
+\begin{lstlisting}[style=bashStyle, language=bash]
+gedit ~/.bashrc
+\end{lstlisting}
+\begin{itemize}
+    \item \code{gedit} -- GNOME text editor.
+    \item \code{\textasciitilde/.bashrc} -- Terminal configuration file.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent Add the following line at the end of the \code{\textasciitilde/.bashrc} file:
+\begin{lstlisting}[style=bashStyle, language=bash]
+source /opt/ros/humble/setup.bash
+\end{lstlisting}
+
+\begin{itemize}
+    \item \code{source} -- Applies settings in this file to the currently open terminal.
+    \item \code{/opt/ros/humble/setup.bash} -- ROS script which sets up commands, paths, etc.
+\end{itemize}
+
+\vspace{0.3cm}
+\begin{notebox}[Summary]
+The combination of these steps ensures that the \code{ros2} command works always in any opened terminal.
+\end{notebox}
+
+\newpage
+
+\section{Start Your First ROS2 Node - Tutorial 2}
+
+\begin{notebox}[Key Concepts]
+\textbf{ROS2 Node} -- ROS2 program, which interacts with ROS2 communications and tools. \\
+\textbf{ROS2 Package} -- ROS2 Nodes organized in packages.
+\end{notebox}
+
+\subsection*{Writer Listener Demo}
+
+To start the demo, use the \code{ros2 run} command followed by the package name and node name:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 run demo_nodes_cpp talker
+\end{lstlisting}
+\begin{itemize}
+    \item \code{demo\_nodes\_cpp} -- Package name.
+    \item \code{talker} -- Node name.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent To start the listener node, open a new terminal and run:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 run demo_nodes_cpp listener
+\end{lstlisting}
+
+\subsection*{Turtlesim Demo}
+
+To run the turtlesim demo, start the main node and the teleoperation node:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 run turtlesim turtlesim_node
+ros2 run turtlesim turtle_teleop_key
+\end{lstlisting}
+
+\subsection*{ROS2 Tools}
+
+ROS2 tool, shows running Nodes:
+\begin{lstlisting}[style=bashStyle, language=bash]
+rqt_graph
+\end{lstlisting}
+
+\newpage
+
+\section{Create and Set Up a ROS2 Workspace - Tutorial 3}
+
+\textbf{Colcon} -- build tool for ROS2, builds code and Nodes.
+
+\vspace{0.3cm}
+\noindent Update the list of software available in external libraries:
+\begin{lstlisting}[style=bashStyle, language=bash]
+sudo apt update
+\end{lstlisting}
+
+\noindent Install the colcon tool:
+\begin{lstlisting}[style=bashStyle, language=bash]
+sudo apt install python3-colcon-common-extensions
+\end{lstlisting}
+
+\subsection*{Colcon Autocompletion}
+
+Add the following line at the end of the \code{\textasciitilde/.bashrc} file to enable autocompletion for colcon arguments:
+\begin{lstlisting}[style=bashStyle, language=bash]
+source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash
+\end{lstlisting}
+
+\subsection*{Workspace Setup}
+
+To set up a new workspace, create the workspace folder and the source folder:
+\begin{lstlisting}[style=bashStyle, language=bash]
+mkdir ros2_ws
+mkdir ros2_ws/src
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent Inside the \code{ros2\_ws} folder, run the command to build the ROS2 workspace in the current folder:
+\begin{lstlisting}[style=bashStyle, language=bash]
+colcon build
+\end{lstlisting}
+
+\subsection*{Sourcing the Workspace}
+
+Add the following line at the end of the \code{\textasciitilde/.bashrc} file to allow using custom ROS2 Nodes in any terminal created in this workspace:
+\begin{lstlisting}[style=bashStyle, language=bash]
+source ~/workspace_name/install/setup.bash
+\end{lstlisting}
+
+\newpage
+
+\section{Create a ROS2 Python Package - Tutorial 4}
+
+\vspace{0.3cm}
+\noindent \textbf{In \code{src} folder:}
+
+\vspace{0.1cm}
+\noindent Create a ROS2 Package:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 pkg create package-name --build-type
+\end{lstlisting}
+\noindent Specify if it's a C++/Python package using the build type:
+\begin{itemize}
+    \item \code{ament\_cmake} -- for C++
+    \item \code{ament\_python} -- for Python
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent Add rcl (ROS Client Library) API:
+\begin{lstlisting}[style=bashStyle, language=bash]
+--dependencies
+\end{lstlisting}
+\begin{itemize}
+    \item \code{rclcpp} -- for C++
+    \item \code{rclpy} -- for Python
+\end{itemize}
+
+\vspace{0.3cm}
+\begin{notebox}
+In every package, there is a \code{package.xml} file containing the name, dependencies, build-type, etc., and a similar \code{setup.py} file.
+\end{notebox}
+
+\vspace{0.3cm}
+\noindent \textbf{In workspace folder:}
+
+\vspace{0.1cm}
+\noindent Build the package, needed before starting nodes:
+\begin{lstlisting}[style=bashStyle, language=bash]
+colcon build
+\end{lstlisting}
+
+\newpage
+
+\section{Create a ROS2 Node with Python and OOP - Tutorial 5}
+
+\vspace{0.3cm}
+\noindent \textbf{In \code{package\_name/package\_name}:}
+
+\vspace{0.1cm}
+\noindent Create Node:
+\begin{lstlisting}[style=bashStyle, language=bash]
+touch node_name.py
+\end{lstlisting}
+
+\noindent Make Node executable:
+\begin{lstlisting}[style=bashStyle, language=bash]
+chmod +x node_name.py
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent \textbf{Python Node Implementation:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+#!/usr/bin/env python3
+# Tell interpreter to use Python3
+
+import rclpy # Import Python library for ROS2
+from rclpy.node import Node # Created Nodes inherit from built-in Node class
+
+class MyNode(Node): # MyNode inherits from Node
+    def __init__(self):
+        super().__init__("first_node") # names Node
+        self.counter_ = 0
+        self.create_timer(1.0, self.timer_callback)
+
+    def timer_callback(self):
+        self.get_logger().info("Hello " + str(self.counter_))
+        self.counter_ += 1
+
+def main(args=None):
+    rclpy.init(args=args) # initializes ROS2 communications
+    node = MyNode()
+    rclpy.spin(node) # node will continue to run until killed
+    rclpy.shutdown() # terminates ROS2 communications
+
+if __name__ == '__main__': # import protection
+    main()
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent \textbf{In \code{setup.py}:}
+
+\vspace{0.1cm}
+\noindent Add to entry points:
+\begin{lstlisting}[style=pythonStyle, language=Python]
+entry_points={
+    'console_scripts': [
+        'test_node = package_name.file_name:main'
+    ],
+},
+\end{lstlisting}
+\begin{itemize}
+    \item \code{test\_node} -- executable name.
+    \item \code{main} -- function name.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent Run updated version of Node:
+\begin{lstlisting}[style=bashStyle, language=bash]
+colcon build --symlink-install
+source ~/.bashrc
+ros2 run package_name node_name
+\end{lstlisting}
+\begin{itemize}
+    \item \code{--symlink-install} -- run updated version without build.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent List running Nodes:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 node list
+\end{lstlisting}
+
+\noindent Show info about a Node:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 node info /node_name
+\end{lstlisting}
+
+\newpage
+
+\section{What is a ROS2 Topic? - Tutorial 6}
+
+\begin{warnbox}[Communication Flow]
+\code{/talker} (Publisher Node) $\rightarrow$ \code{/chatter} (Topic) $\rightarrow$ \code{/listener} (Subscriber Node)
+\end{warnbox}
+
+\vspace{0.3cm}
+\noindent List running Topics:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 topic list
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent Show info about a Topic:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 topic info /topic_name
+\end{lstlisting}
+\code{Type: std\_msgs/msg/String}\\
+\code{Publisher count: 1}\\
+\code{Subscription count: 1}
+
+\vspace{0.3cm}
+\noindent Show details of a message interface:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 interface show std_msgs/msg/String
+\end{lstlisting}
+\code{string data} -- sent message contains data of 'string' type.
+
+\vspace{0.3cm}
+\noindent Show data received by Topic:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 topic echo /chatter
+\end{lstlisting}
+
+\vspace{0.5cm}
+\begin{notebox}
+There can be multiple Nodes publishing to the same Topic and multiple Nodes subscribing to the same topic.
+\end{notebox}
+
+\newpage
+
+\section{Write a ROS2 Publisher with Python - Tutorial 7}
+
+\vspace{0.3cm}
+\noindent Import message type:
+\begin{lstlisting}[style=pythonStyle, language=Python]
+from geometry_msgs.msg import Twist
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent In \code{package.xml} add imported module:
+\begin{lstlisting}[style=xmlStyle]
+<depend>geometry_msgs</depend>
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent \textbf{In constructor:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+self.cmd_vel_pub_ = self.create_publisher(Twist, "/turtle1/cmd_vel", 10)
+\end{lstlisting}
+\begin{itemize}
+    \item \code{self.cmd\_vel\_pub\_} -- Create publisher.
+    \item \code{Twist} -- Message type.
+    \item \code{"/turtle1/cmd\_vel"} -- Topic name.
+    \item \code{10} -- queue size.
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent \code{geometry\_msgs/msg/Twist} consists of:
+\begin{itemize}
+    \item \code{linear} (position)
+    \item \code{angular} (rotation)
+\end{itemize}
+
+\vspace{0.3cm}
+\noindent \textbf{Publishing function:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+def send_velocity_command(self):
+    msg = Twist()
+    msg.linear.x = 2.0
+    msg.angular.z = 1.0
+    self.cmd_vel_pub_.publish(msg) # send msg via publisher
+\end{lstlisting}
+
+\newpage
+
+\section{Write a ROS2 Subscriber with Python - Tutorial 8}
+
+\vspace{0.3cm}
+\noindent Import message type:
+\begin{lstlisting}[style=pythonStyle, language=Python]
+from turtlesim.msg import Pose
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent In \code{package.xml} add imported module:
+\begin{lstlisting}[style=xmlStyle]
+<depend>turtlesim</depend>
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent \textbf{In constructor:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+self.pose_publisher_ = self.create_subscription(Pose, "/turtle1/pose", self.pose_callback, 10)
+\end{lstlisting}
+\begin{itemize}
+    \item \code{self.create\_subscription} -- Create subscriber.
+    \item \code{Pose} -- Message type.
+    \item \code{"/turtle1/pose"} -- Topic name.
+    \item \code{self.pose\_callback} -- Callback name.
+    \item \code{10} -- Queue size.
+\end{itemize}
+
+\vspace{0.3cm}
+\begin{notebox}
+Callback will be called everytime when you receive a message on that Topic.
+\end{notebox}
+
+\vspace{0.3cm}
+\noindent \textbf{Callback function receiving messages:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+def pose_callback(self, msg: Pose):
+    self.get_logger().info("(" + str(msg.x) + ", " + str(msg.y) + ")")
+\end{lstlisting}
+
+\newpage
+
+\section{Create a Closed Loop System with a Publisher and a Subscriber - Tutorial 9}
+
+\vspace{0.3cm}
+\noindent Combine previous two tutorials -- Create a Node that both subscribes and publishes appropriate command when received a message.
+
+\newpage
+
+\section{What is a ROS2 Service? - Tutorial 10}
+
+\vspace{0.3cm}
+\noindent Services are interactions that act like a Client/Server. Client sends a request to the Server and Server responds to the Client. Topics don't give answers.
+
+\vspace{0.3cm}
+\noindent Services cannot be seen in \code{rqt\_graph}. List running services:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 service list
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent See Service type:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 service type /service_name
+\end{lstlisting}
+Example: \code{example\_interfaces/srv/AddTwoInts}
+
+\vspace{0.3cm}
+\noindent See data inside Service message:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 interface show example_interfaces/srv/AddTwoInts
+\end{lstlisting}
+\code{int64 a} -- request \\
+\code{int64 b} -- request \\
+\code{---} \\
+\code{int64 sum} -- response
+
+\vspace{0.3cm}
+\noindent Make a request:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 service call /service_name service/type "{'a': 2, 'b': 5}"
+\end{lstlisting}
+\begin{itemize}
+    \item Response on client from server: \code{(...) sum = 7}
+    \item Info about request on server: \code{(...) a: 2 b: 5}
+\end{itemize}
+
+\vspace{0.5cm}
+\begin{warnbox}[Server/Client Architecture]
+There can only be one server, but many clients connecting to the server.
+\end{warnbox}
+
+\vspace{0.3cm}
+\noindent \textbf{Requests} are typically used for:
+\begin{itemize}
+    \item Computation
+    \item Change of settings
+\end{itemize}
+
+\vspace{0.3cm}
+\begin{notebox}[Topics vs Services]
+Topics are used to send straight data, without expecting an answer.
+\end{notebox}
+
+\newpage
+
+\section{Write a ROS2 Service Client with Python - Tutorial 11}
+
+\vspace{0.3cm}
+\noindent Import module:
+\begin{lstlisting}[style=pythonStyle, language=Python]
+from functools import partial
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent In \code{package.xml} add imported module:
+\begin{lstlisting}[style=xmlStyle]
+<depend>functools</depend>
+\end{lstlisting}
+
+\vspace{0.3cm}
+\noindent \textbf{Create a Service-sending function:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+def call_set_pen_service(self, argument):
+    client = self.create_client(ServiceType, "/service_name")
+    
+    # Wait for service to be available
+    while not client.wait_for_service(1.0):
+        self.get_logger().warn("Waiting for service")
+        
+    request = ServiceType.Request()
+    request.argument = argument
+    
+    # Request without waiting for response
+    future = client.call_async(request)
+    future.add_done_callback(partial(self.callback))
+\end{lstlisting}
+
+\vspace{0.3cm}
+\begin{notebox}[Using partial]
+\code{partial} is used when, for example, a callback needs more arguments than ROS can give at the moment. \code{partial} allows adding missing arguments in the meantime.
+\end{notebox}
+
+\vspace{0.3cm}
+\noindent \textbf{Callback function:}
+\begin{lstlisting}[style=pythonStyle, language=Python]
+def callback(self, future):
+    try:
+        response = future.result()
+    except Exception as e:
+        self.get_logger().error("Response error")
+\end{lstlisting}
+
+\vspace{0.3cm}
+\begin{warnbox}[Topics vs Services Usage]
+You can publish on a Topic very frequently. A Service is made to be called only when needed. Otherwise, it can really slow down the application.
+\end{warnbox}
+
+\vspace{0.3cm}
+\noindent Get frequency of a Topic:
+\begin{lstlisting}[style=bashStyle, language=bash]
+ros2 hz /topic_name
+\end{lstlisting}
+
+\end{document}
