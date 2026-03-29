@@ -1,0 +1,13 @@
+# Ignore compilation folders
+build/
+install/
+log/
+
+# Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# System files
+.vscode/
+.DS_Store
