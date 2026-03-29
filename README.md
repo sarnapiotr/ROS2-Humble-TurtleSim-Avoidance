@@ -11,7 +11,8 @@ This project was realized and expanded upon as part of the **"ROS2 Tutorials - R
 **Key Characteristics:**
 * **Movement Logic:** The turtle moves forward automatically and calculates the distance to the walls. If it approaches a boundary, it rotates to avoid a collision.
 * **Dynamic Pen Color:** A ROS2 Service client is utilized to change the pen color (RGB values) when the turtle crosses a specific coordinate (e.g., the vertical center line).
-* **Communication:** * **Topics:** Subscribes to `/turtle1/pose` (to monitor current coordinates) and publishes to `/turtle1/cmd_vel` (to send velocity commands).
+* **Communication:**
+  * **Topics:** Subscribes to `/turtle1/pose` (to monitor current coordinates) and publishes to `/turtle1/cmd_vel` (to send velocity commands).
   * **Services:** Calls the `/turtle1/set_pen` service to alter the drawing properties.
 
 ## ROS2 System Graph (rqt_graph)
